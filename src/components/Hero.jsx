@@ -1,5 +1,6 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLenis } from 'lenis/react';
 import Scene3D from './Scene3D';
 import { Crosshair, Activity, ShieldCheck, Github, Linkedin, Mail, ChevronDown, Terminal } from 'lucide-react';
 
@@ -7,53 +8,75 @@ const TypewriterText = ({ text, delay = 0, speed = 50 }) => {
   const [displayedText, setDisplayedText] = useState('');
   
   useEffect(() => {
-    let timeout;
+    let intervalId;
     let currentIndex = 0;
-    
+
     const startTyping = () => {
-      timeout = setInterval(() => {
+      intervalId = setInterval(() => {
         if (currentIndex <= text.length) {
           setDisplayedText(text.slice(0, currentIndex));
-          currentIndex++;
+          currentIndex += 1;
         } else {
-          clearInterval(timeout);
+          clearInterval(intervalId);
         }
-      }, speed); // Typing speed
+      }, speed);
     };
 
     const initialDelay = setTimeout(startTyping, delay * 1000);
     return () => {
       clearTimeout(initialDelay);
-      clearInterval(timeout);
+      clearInterval(intervalId);
     };
   }, [text, delay, speed]);
 
   return <span>{displayedText}<span className="animate-pulse" style={{ color: '#00f5ff' }}>_</span></span>;
 };
 
+const HERO_SCROLL_OFFSET = -88;
+
 const Hero = () => {
+  const lenis = useLenis();
+
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
-    if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth' });
+    if (!projectsSection) return;
+    if (lenis) {
+      lenis.scrollTo(projectsSection, {
+        offset: HERO_SCROLL_OFFSET,
+        duration: 1.45,
+        easing: (t) => 1 - Math.pow(1 - t, 4),
+      });
+    } else {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
-  
+
   const scrollDown = () => {
-    window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    const current = lenis ? lenis.scroll : window.scrollY;
+    const next = current + window.innerHeight;
+    if (lenis) {
+      lenis.scrollTo(next, { duration: 1.2, easing: (t) => 1 - (1 - t) ** 3 });
+    } else {
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    }
   };
 
   return (
-    <div style={{ 
-      position: 'relative', 
-      height: '100vh', 
-      width: '100%', 
-      display: 'flex', 
-      alignItems: 'center', 
-      overflow: 'hidden',
-      backgroundColor: '#0a0a0f'
-    }}>
+    <div
+      className="hero-root"
+      style={{
+        position: 'relative',
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden',
+        backgroundColor: 'var(--bg-dark)',
+      }}
+    >
       {/* 3D Background Scene */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <Suspense fallback={<div style={{ color: '#00f5ff', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontFamily: 'monospace' }}>[ LOADING_CORE_ASSETS... ]</div>}>
+        <Suspense fallback={<div className="hero-loading-fallback">[ LOADING_CORE_ASSETS... ]</div>}>
           <Scene3D />
         </Suspense>
       </div>
@@ -139,7 +162,7 @@ const Hero = () => {
               }}
             >
                <Terminal size={20} color="#bf00ff" />
-               <TypewriterText text="> JAVA FULL STACK_DEV && DATA_ANALYST" delay={1.5} speed={40} />
+               <TypewriterText text="> FULL_STACK JAVA_DEVELOPER" delay={1.5} speed={40} />
             </motion.div>
 
             {/* Description */}
@@ -156,7 +179,7 @@ const Hero = () => {
                 fontFamily: 'var(--font-body)'
               }}
             >
-              Architecting robust backend systems, engineering dynamic user interfaces, and translating complex data matrices into actionable intelligence.
+              Final-year CSE student & Full Stack Java Developer building secure, scalable web apps with Spring Boot, Spring Security, Hibernate, and React. Passionate about clean, production-ready code.
             </motion.div>
 
             {/* Action Buttons & Socials */}
@@ -176,9 +199,9 @@ const Hero = () => {
 
               <div style={{ display: 'flex', gap: '1rem', marginLeft: '0.5rem' }} className="hide-on-mobile">
                  {[
-                   { icon: <Github size={20} />, href: "https://github.com/TanmayPatil" },
-                   { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/TanmayPatil" },
-                   { icon: <Mail size={20} />, href: "mailto:contact@example.com" }
+                   { icon: <Github size={20} />, href: "https://github.com/tanmay121-hub/" },
+                   { icon: <Linkedin size={20} />, href: "https://www.linkedin.com/in/tanmay-patil-10997a259/" },
+                   { icon: <Mail size={20} />, href: "mailto:tanmaypatil.dev@gmail.com" }
                  ].map((social, idx) => (
                    <motion.a 
                      key={idx}

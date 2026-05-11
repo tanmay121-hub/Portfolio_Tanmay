@@ -38,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#0a0a0f', color: '#e4e1e9' }}>
+    <div className="app-shell">
       {/* Background Elements */}
       <div className="bg-stars" />
       <div className="bg-grid" />

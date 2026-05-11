@@ -1,15 +1,17 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, MeshDistortMaterial, Float, Stars, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
 
-const TechLogo = ({ position, color, label }) => {
+const TechLogo = ({ position, color }) => {
   const meshRef = useRef();
-  
+  const baseY = useRef(position[1]);
+
   useFrame((state) => {
+    const mesh = meshRef.current;
+    if (!mesh) return;
     const time = state.clock.getElapsedTime();
-    meshRef.current.position.y += Math.sin(time + position[0]) * 0.008;
-    meshRef.current.rotation.y += 0.015;
+    mesh.position.y = baseY.current + Math.sin(time * 1.1 + position[0]) * 0.35;
+    mesh.rotation.y += 0.015;
   });
 
   return (
@@ -25,9 +27,11 @@ const TechLogo = ({ position, color, label }) => {
 const HolographicGlobe = () => {
   const globeRef = useRef();
 
-  useFrame((state) => {
-    globeRef.current.rotation.y += 0.008;
-    globeRef.current.rotation.x += 0.003;
+  useFrame(() => {
+    const globe = globeRef.current;
+    if (!globe) return;
+    globe.rotation.y += 0.008;
+    globe.rotation.x += 0.003;
   });
 
   return (
@@ -78,10 +82,10 @@ const Scene3D = () => {
       <HolographicGlobe />
       
       {/* Orbiting Tech Elements - Scaled and Positioned better */}
-      <TechLogo position={[5, 3, -3]} color="#00f5ff" label="Java" />
-      <TechLogo position={[-5, -3, -2]} color="#bf00ff" label="React" />
-      <TechLogo position={[4, -4, 3]} color="#ff0080" label="Spring" />
-      <TechLogo position={[-6, 4, 2]} color="#00ff88" label="MySQL" />
+      <TechLogo position={[5, 3, -3]} color="#00f5ff" />
+      <TechLogo position={[-5, -3, -2]} color="#bf00ff" />
+      <TechLogo position={[4, -4, 3]} color="#ff0080" />
+      <TechLogo position={[-6, 4, 2]} color="#00ff88" />
 
       <fog attach="fog" args={['#0a0a0f', 8, 20]} />
     </Canvas>

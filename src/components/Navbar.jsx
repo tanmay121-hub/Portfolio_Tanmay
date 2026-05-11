@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Terminal, Cpu, Activity } from 'lucide-react';
+import { useLenis } from 'lenis/react';
+import { Menu, X, Activity } from 'lucide-react';
 
 const Navbar = () => {
+  const lenis = useLenis();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -31,7 +33,10 @@ const Navbar = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="nav-logo-container"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => {
+            if (lenis) lenis.scrollTo(0, { duration: 1.35, easing: (t) => 1 - (1 - t) ** 3 });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         >
           <div style={{ position: 'relative' }}>
             <motion.div 

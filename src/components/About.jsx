@@ -10,7 +10,7 @@ const About = () => {
   ];
 
   return (
-    <div id="about" className="py-24 px-6 md:px-24">
+    <div>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
@@ -24,10 +24,10 @@ const About = () => {
             <div className="relative" style={{ position: 'relative', width: '22rem', height: '22rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               
               {/* Outer Dashed Spin Ring */}
-              <div className="absolute inset-0 border border-cyan-500/30 rounded-full border-dashed animate-spin-slow" style={{ position: 'absolute', inset: 0, border: '2px dashed rgba(0,245,255,0.3)', borderRadius: '50%' }} />
+              <div className="animate-spin-slow" style={{ position: 'absolute', inset: 0, border: '2px dashed rgba(0,245,255,0.3)', borderRadius: '50%' }} />
               
               {/* Middle Solid Ring with Pulse */}
-              <div className="absolute inset-4 border-2 border-purple-500/30 rounded-full animate-pulse" style={{ position: 'absolute', inset: '1rem', border: '2px solid rgba(191,0,255,0.3)', borderRadius: '50%' }} />
+              <div className="animate-pulse" style={{ position: 'absolute', inset: '1rem', border: '2px solid rgba(191,0,255,0.3)', borderRadius: '50%' }} />
               
               {/* Inner Glowing Core Container */}
               <div className="absolute inset-8 overflow-hidden rounded-full shadow-[0_0_50px_rgba(0,245,255,0.4)]" style={{ position: 'absolute', inset: '2rem', borderRadius: '50%', border: '4px solid #00f5ff', overflow: 'hidden', boxShadow: '0 0 60px rgba(0,245,255,0.4)' }}>
@@ -70,9 +70,10 @@ const About = () => {
                 <span>root@tanmay:~# whoami</span>
               </div>
               <p style={{ fontSize: '1rem', color: '#e2e8f0', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-                Final year B.Tech student with a passion for building robust digital ecosystems. 
-                Specializing in <span style={{ color: '#00f5ff', fontWeight: 'bold' }}>Java Full Stack Development</span>, 
-                I bridge the gap between complex backend logic and immersive frontend experiences.
+                Final-year Computer Science Engineering student and <span style={{ color: '#00f5ff', fontWeight: 'bold' }}>Full Stack Java Developer</span> with 
+                hands-on experience in building secure and scalable web applications using Java, Spring Boot, Spring Security, 
+                Hibernate (JPA), and React. Strong understanding of RESTful API design, backend architecture, authentication 
+                and authorization, and relational database design.
               </p>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', padding: '1rem', backgroundColor: 'rgba(0, 245, 255, 0.05)', borderLeft: '2px solid #00f5ff' }}>
                 <Shield size={24} color="#00f5ff" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
@@ -82,22 +83,23 @@ const About = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.25rem' }}>
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.2 }}
+                  transition={{ delay: i * 0.15 }}
                   viewport={{ once: true }}
+                  whileHover={{ y: -4 }}
                   className="glass-card accent-card"
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.5rem', cursor: 'pointer' }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.5rem', cursor: 'default', textAlign: 'center' }}
                 >
-                  <div style={{ color: 'var(--neon-cyan)', marginBottom: '0.5rem' }}>
+                  <div style={{ color: 'var(--neon-cyan)', marginBottom: '0.75rem' }}>
                     {stat.icon}
                   </div>
-                  <div style={{ fontSize: '10px', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{stat.label}</div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'white', fontFamily: 'var(--font-heading)' }}>{stat.value}</div>
+                  <div className="cyber-label" style={{ marginBottom: '0.4rem' }}>{stat.label}</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: '900', color: 'white', fontFamily: 'var(--font-heading)' }}>{stat.value}</div>
                 </motion.div>
               ))}
             </div>
